@@ -31,6 +31,9 @@
   "customizations": {
     "vscode": {
       "settings": {
+        // Allow the container workspace's folder-open task to launch a shell.
+        // https://code.visualstudio.com/docs/debugtest/tasks#_automatic-tasks
+        "task.allowAutomaticTasks": "on",
         // Keep the host's Git configuration out of the container.
         // https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials
         "dev.containers.copyGitConfig": false,
