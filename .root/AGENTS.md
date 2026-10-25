@@ -16,6 +16,10 @@ one workspace (a "meta-repo"). This file is at `/workspace/AGENTS.md`.
     <repo>/            # one directory per repository
 ```
 
+`workspace/` itself is not version controlled. 
+
+The individual folders underneath are.
+
 ## ThunderJar
 
 ```

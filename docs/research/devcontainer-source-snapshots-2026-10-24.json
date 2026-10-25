@@ -1,0 +1,219 @@
+{
+  "research_date": "2026-10-24",
+  "method": "Read-only source inspection; candidates not executed",
+  "snapshots": [
+    {
+      "repo": "AnExiledDev/CodeForge",
+      "commit": "fd4c66ca6e3e099a4ad3734aabea530255ea484c",
+      "commit_date": "2026-04-16",
+      "source": "https://github.com/AnExiledDev/CodeForge/tree/fd4c66ca6e3e099a4ad3734aabea530255ea484c",
+      "metadata": {
+        "repo": "AnExiledDev/CodeForge",
+        "stars": 10,
+        "forks": 5,
+        "archived": false,
+        "default_branch": "main",
+        "license": "NOASSERTION",
+        "pushed_at": "2026-07-30T20:24:11Z",
+        "html_url": "https://github.com/AnExiledDev/CodeForge"
+      }
+    },
+    {
+      "repo": "Hansehart/devcontainer-features",
+      "commit": "dc7981b0a1464ca4791e86be15eb333b668ec2ff",
+      "commit_date": "2026-10-22",
+      "source": "https://github.com/Hansehart/devcontainer-features/tree/dc7981b0a1464ca4791e86be15eb333b668ec2ff",
+      "metadata": {}
+    },
+    {
+      "repo": "Hansehart/o3s",
+      "commit": "221f933fbd5640609a28ebcc132e81a0d2480ada",
+      "commit_date": "2026-10-21",
+      "source": "https://github.com/Hansehart/o3s/tree/221f933fbd5640609a28ebcc132e81a0d2480ada",
+      "metadata": {
+        "repo": "Hansehart/o3s",
+        "stars": 13,
+        "forks": 3,
+        "archived": false,
+        "default_branch": "main",
+        "license": "MIT",
+        "pushed_at": "2026-10-21T21:58:24Z",
+        "html_url": "https://github.com/Hansehart/o3s"
+      }
+    },
+    {
+      "repo": "KB1SLN-Labs/agent-observability",
+      "commit": "2c279dbde1b45845d1b52df19203e9081d6d7bfb",
+      "commit_date": "2026-06-24",
+      "source": "https://github.com/KB1SLN-Labs/agent-observability/tree/2c279dbde1b45845d1b52df19203e9081d6d7bfb",
+      "metadata": {
+        "repo": "KB1SLN-Labs/agent-observability",
+        "stars": 17,
+        "forks": 1,
+        "archived": false,
+        "default_branch": "main",
+        "license": null,
+        "pushed_at": "2026-06-24T14:22:57Z",
+        "html_url": "https://github.com/KB1SLN-Labs/agent-observability"
+      }
+    },
+    {
+      "repo": "anthropics/claude-code",
+      "commit": "318b7e6ac4e726e88a4ad326214866a93c373b1b",
+      "commit_date": "2026-10-24",
+      "source": "https://github.com/anthropics/claude-code/tree/318b7e6ac4e726e88a4ad326214866a93c373b1b",
+      "metadata": {}
+    },
+    {
+      "repo": "centminmod/claude-code-devcontainers",
+      "commit": "bc67b148e0371eb5616b7dea7bb644c2079fabee",
+      "commit_date": "2026-01-01",
+      "source": "https://github.com/centminmod/claude-code-devcontainers/tree/bc67b148e0371eb5616b7dea7bb644c2079fabee",
+      "metadata": {
+        "repo": "centminmod/claude-code-devcontainers",
+        "stars": 32,
+        "forks": 10,
+        "archived": false,
+        "default_branch": "master",
+        "license": null,
+        "pushed_at": "2026-01-01T02:12:02Z",
+        "html_url": "https://github.com/centminmod/claude-code-devcontainers"
+      }
+    },
+    {
+      "repo": "gatezh/devcontainers",
+      "commit": "f84ccbd8e3d426ca9e6c3c19085a4859d0e52b86",
+      "commit_date": "2026-10-24",
+      "source": "https://github.com/gatezh/devcontainers/tree/f84ccbd8e3d426ca9e6c3c19085a4859d0e52b86",
+      "metadata": {
+        "repo": "gatezh/devcontainers",
+        "stars": 2,
+        "forks": 0,
+        "archived": false,
+        "default_branch": "master",
+        "license": null,
+        "pushed_at": "2026-10-24T00:37:22Z",
+        "html_url": "https://github.com/gatezh/devcontainers"
+      }
+    },
+    {
+      "repo": "helpers-no/devcontainer-toolbox",
+      "commit": "994beac5244e551cfad89eb85e7446546f6e9cfe",
+      "commit_date": "2026-09-25",
+      "source": "https://github.com/helpers-no/devcontainer-toolbox/tree/994beac5244e551cfad89eb85e7446546f6e9cfe",
+      "metadata": {
+        "repo": "helpers-no/devcontainer-toolbox",
+        "stars": 2,
+        "forks": 4,
+        "archived": false,
+        "default_branch": "main",
+        "license": "MIT",
+        "pushed_at": "2026-09-25T18:02:16Z",
+        "html_url": "https://github.com/helpers-no/devcontainer-toolbox"
+      }
+    },
+    {
+      "repo": "jkudo/project-containers-manager",
+      "commit": "81722a37dfbb469c627e0b077e3357a75e43f927",
+      "commit_date": "2026-06-19",
+      "source": "https://github.com/jkudo/project-containers-manager/tree/81722a37dfbb469c627e0b077e3357a75e43f927",
+      "metadata": {}
+    },
+    {
+      "repo": "kevinveenbirkenbach/agentbox",
+      "commit": "4e25cccee98b9e2693edadb4349ed2b9d72bf29c",
+      "commit_date": "2026-08-31",
+      "source": "https://github.com/kevinveenbirkenbach/agentbox/tree/4e25cccee98b9e2693edadb4349ed2b9d72bf29c",
+      "metadata": {
+        "repo": "kevinveenbirkenbach/agentbox",
+        "stars": 0,
+        "forks": 0,
+        "archived": false,
+        "default_branch": "main",
+        "license": "MIT",
+        "pushed_at": "2026-08-31T21:07:32Z",
+        "html_url": "https://github.com/kevinveenbirkenbach/agentbox"
+      }
+    },
+    {
+      "repo": "mattolson/agent-sandbox",
+      "commit": "ea9d9ed82a197d07d98c6d1163bdb427243997f1",
+      "commit_date": "2026-10-20",
+      "source": "https://github.com/mattolson/agent-sandbox/tree/ea9d9ed82a197d07d98c6d1163bdb427243997f1",
+      "metadata": {
+        "repo": "mattolson/agent-sandbox",
+        "stars": 211,
+        "forks": 19,
+        "archived": false,
+        "default_branch": "main",
+        "license": "MIT",
+        "pushed_at": "2026-10-21T01:06:37Z",
+        "html_url": "https://github.com/mattolson/agent-sandbox"
+      }
+    },
+    {
+      "repo": "novotnyllc/ContainAI",
+      "commit": "0a4e8add4d7804ef96586e69d94cc780fa13e410",
+      "commit_date": "2026-02-06",
+      "source": "https://github.com/novotnyllc/ContainAI/tree/0a4e8add4d7804ef96586e69d94cc780fa13e410",
+      "metadata": {
+        "repo": "novotnyllc/ContainAI",
+        "stars": 13,
+        "forks": 2,
+        "archived": false,
+        "default_branch": "main",
+        "license": "MIT",
+        "pushed_at": "2026-02-12T05:19:30Z",
+        "html_url": "https://github.com/novotnyllc/ContainAI"
+      }
+    },
+    {
+      "repo": "qte77/polyforge-orchestrator",
+      "commit": "319820adf3e940e711d4f6d710c68094d2946fa9",
+      "commit_date": "2026-09-23",
+      "source": "https://github.com/qte77/polyforge-orchestrator/tree/319820adf3e940e711d4f6d710c68094d2946fa9",
+      "metadata": {
+        "repo": "qte77/polyforge-orchestrator",
+        "stars": 1,
+        "forks": 0,
+        "archived": false,
+        "default_branch": "main",
+        "license": "Apache-2.0",
+        "pushed_at": "2026-10-23T23:46:29Z",
+        "html_url": "https://github.com/qte77/polyforge-orchestrator"
+      }
+    },
+    {
+      "repo": "schmitthub/clawker",
+      "commit": "9713e400639e960c674fdbe05e258166f2b2aebf",
+      "commit_date": "2026-10-22",
+      "source": "https://github.com/schmitthub/clawker/tree/9713e400639e960c674fdbe05e258166f2b2aebf",
+      "metadata": {
+        "repo": "schmitthub/clawker",
+        "stars": 58,
+        "forks": 8,
+        "archived": false,
+        "default_branch": "main",
+        "license": "MIT",
+        "pushed_at": "2026-10-23T06:45:00Z",
+        "html_url": "https://github.com/schmitthub/clawker"
+      }
+    },
+    {
+      "repo": "trailofbits/claude-code-devcontainer",
+      "commit": "feea113719e50c8820ce5d0f11f2b0abb01d32a4",
+      "commit_date": "2026-08-28",
+      "source": "https://github.com/trailofbits/claude-code-devcontainer/tree/feea113719e50c8820ce5d0f11f2b0abb01d32a4",
+      "metadata": {
+        "repo": "trailofbits/claude-code-devcontainer",
+        "stars": 958,
+        "forks": 107,
+        "archived": false,
+        "default_branch": "main",
+        "license": "Apache-2.0",
+        "pushed_at": "2026-08-28T14:04:50Z",
+        "html_url": "https://github.com/trailofbits/claude-code-devcontainer"
+      }
+    }
+  ]
+}
