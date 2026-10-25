@@ -79,4 +79,17 @@ ln -sfn "$claude_json_persisted" "$claude_json"
 chown -h "$USER_UID:$USER_GID" "$claude_json"
 [[ -e "$claude_json_persisted" ]] && chown "$USER_UID:$USER_GID" "$claude_json_persisted"
 
+# Configure Git for the container user without contacting GitHub or storing a
+# token. gh reads GITHUB_TOKEN (or GH_TOKEN) when Git requests credentials.
+# This is also safe when no token is set: only authenticated Git operations fail.
+if ! runuser -u "$USER_NAME" -- env HOME="$USER_HOME" bash -c '
+    set -e
+    git config --global --replace-all credential.https://github.com.helper ""
+    git config --global --add credential.https://github.com.helper "!gh auth git-credential"
+    git config --global --replace-all url.https://github.com/.insteadOf "git@github.com:"
+    git config --global --add url.https://github.com/.insteadOf "ssh://git@github.com/"
+'; then
+    echo "[meta-repo] warning: GitHub Git setup failed; continuing startup" >&2
+fi
+
 exec "$@"

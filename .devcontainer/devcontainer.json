@@ -9,29 +9,39 @@
   "service": "dev",
   "workspaceFolder": "/workspace",
   "remoteUser": "vscode",
-  // Avoid using host agent and askpass credentials in VS Code processes.
-  "remoteEnv": {
-    "SSH_AUTH_SOCK": null,
-    "GIT_ASKPASS": null,
-    "SSH_ASKPASS": null
-  },
   // Remap vscode to the host UID on Linux hosts (no-op on macOS).
   "updateRemoteUserUID": true,
   "shutdownAction": "stopCompose",
   // Fail early, with a useful message, if apply.sh hasn't been run.
   "initializeCommand": "test -f .devcontainer/compose.local.yaml || { echo 'meta-repo: .devcontainer/compose.local.yaml is missing. Run ./apply.sh on the host first.' >&2; exit 1; }",
   "features": {
+    // https://github.com/devcontainers/features/blob/main/src/docker-in-docker/README.md
     // Docker-in-Docker, including the Docker Compose v2 plugin.
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
       "dockerDashComposeVersion": "v2"
     }
   },
+  // Avoid using host agent and askpass credentials in VS Code processes.
+  // https://code.visualstudio.com/remote/advancedcontainers/environment-variables
+  "remoteEnv": {
+    "SSH_AUTH_SOCK": null,
+    "GIT_ASKPASS": null,
+    "SSH_ASKPASS": null
+  },
   "customizations": {
     "vscode": {
       "settings": {
+        // Keep the host's Git configuration out of the container.
+        // https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials
         "dev.containers.copyGitConfig": false,
+        // Prevent Dev Containers from installing its host credential helper.
+        // https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials#_using-a-credential-helper
         "dev.containers.gitCredentialHelperConfigLocation": "none",
+        // Disable VS Code's askpass helper for Git authentication prompts.
+        // https://github.com/microsoft/vscode/blob/main/extensions/git/package.json#L3957
         "git.useIntegratedAskPass": false,
+        // Prevent VS Code from injecting Git authentication into terminals.
+        // https://github.com/microsoft/vscode/blob/main/extensions/git/package.json#L3941
         "git.terminalAuthentication": false
       },
       "extensions": [
