@@ -153,6 +153,22 @@ fi
 PROJECT_NAME="$METAREPO_ID-$METAREPO_SUFFIX"
 
 # ---------------------------------------------------------------------------
+# git identity
+#   Optional. `git.name` and `git.email` set who commits made inside the
+#   container are attributed to, overriding the .gitconfig VS Code copies in.
+#   That is the point for agent/bot accounts. Set both or neither.
+# ---------------------------------------------------------------------------
+GIT_NAME=$(q '.git.name // ""')
+GIT_EMAIL=$(q '.git.email // ""')
+if [[ -n "$GIT_NAME" || -n "$GIT_EMAIL" ]]; then
+    if [[ -z "$GIT_NAME" || -z "$GIT_EMAIL" ]]; then
+        err "git.name and git.email must be set together (in meta-repo.yaml or meta-repo.local.yaml)"
+    elif [[ "$GIT_EMAIL" != ?*@?* ]]; then
+        err "git.email '$GIT_EMAIL' does not look like an email address"
+    fi
+fi
+
+# ---------------------------------------------------------------------------
 # root
 # ---------------------------------------------------------------------------
 ROOT=$(q '.root // ""')
@@ -370,6 +386,16 @@ done
 
 # Environment
 ID="$METAREPO_ID" gen '.services.dev.environment.META_REPO_ID = strenv(ID)'
+
+# Git identity, as if `git config --global user.name/user.email` had been run.
+# GIT_CONFIG_* outranks the .gitconfig VS Code copies into the container.
+if [[ -n "$GIT_NAME" ]]; then
+    K="GIT_CONFIG_COUNT" V="2" gen '.services.dev.environment[strenv(K)] = strenv(V)'
+    K="GIT_CONFIG_KEY_0" V="user.name" gen '.services.dev.environment[strenv(K)] = strenv(V)'
+    K="GIT_CONFIG_VALUE_0" V="$(compose_literal "$GIT_NAME")" gen '.services.dev.environment[strenv(K)] = strenv(V)'
+    K="GIT_CONFIG_KEY_1" V="user.email" gen '.services.dev.environment[strenv(K)] = strenv(V)'
+    K="GIT_CONFIG_VALUE_1" V="$(compose_literal "$GIT_EMAIL")" gen '.services.dev.environment[strenv(K)] = strenv(V)'
+fi
 for var in http_proxy https_proxy no_proxy; do
     value=$(V="$var" q '.proxy.runtime[strenv(V)] // ""')
     if [[ -n "$value" ]]; then
@@ -476,6 +502,9 @@ echo "Wrote .devcontainer/compose.local.yaml ($( $ADMIN && echo 'admin mode' || 
 echo "  project:  $PROJECT_NAME"
 if [[ "$SUFFIX_SOURCE" != metarepo_suffix ]]; then
     echo "  suffix:   $METAREPO_SUFFIX (hash of this checkout's path; set metarepo_suffix to pin it)"
+fi
+if [[ -n "$GIT_NAME" ]]; then
+    echo "  git:      $GIT_NAME <$GIT_EMAIL>"
 fi
 printf '%s' "$FOLDER_NAMES" | while IFS= read -r name; do
     [[ -n "$name" ]] && echo "  /workspace/$name"

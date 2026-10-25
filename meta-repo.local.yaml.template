@@ -8,6 +8,15 @@
 # The host folder your repos live in. `~` is expanded.
 root: "~/git-workspace"
 
+# Optional. Commit identity inside the container, as if `git config --global
+# user.name` and `user.email` had been run. Overrides the host .gitconfig VS Code
+# copies in, so this is how an agent or bot account commits as itself. Set both
+# keys or neither. Also allowed in meta-repo.yaml for a team-wide default; this
+# file wins.
+# git:
+#   name: "Some Agent"
+#   email: "agent@example.com"
+
 # Values for the env keys declared in meta-repo.yaml. Every declared key needs
 # a value.
 #

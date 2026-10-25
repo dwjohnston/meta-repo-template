@@ -9,6 +9,12 @@
   "service": "dev",
   "workspaceFolder": "/workspace",
   "remoteUser": "vscode",
+  // Avoid using host agent and askpass credentials in VS Code processes.
+  "remoteEnv": {
+    "SSH_AUTH_SOCK": null,
+    "GIT_ASKPASS": null,
+    "SSH_ASKPASS": null
+  },
   // Remap vscode to the host UID on Linux hosts (no-op on macOS).
   "updateRemoteUserUID": true,
   "shutdownAction": "stopCompose",
@@ -24,7 +30,9 @@
     "vscode": {
       "settings": {
         "dev.containers.copyGitConfig": false,
-        "dev.containers.gitCredentialHelperConfigLocation": "none"
+        "dev.containers.gitCredentialHelperConfigLocation": "none",
+        "git.useIntegratedAskPass": false,
+        "git.terminalAuthentication": false
       },
       "extensions": [
         "anthropic.claude-code",

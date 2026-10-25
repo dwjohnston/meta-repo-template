@@ -38,7 +38,9 @@ Requirements: Docker, VS Code with the Dev Containers extension, and
    cp meta-repo.local.yaml.template meta-repo.local.yaml
    ```
 
-   Set `root`, values for each `env` key, and any proxies.
+   Set `root`, values for each `env` key, and any proxies. Optionally set `git`
+   name and email if commits inside the container should be attributed to
+   something other than your host `.gitconfig`.
 3. Generate the Compose config:
 
    ```bash
@@ -62,7 +64,8 @@ re-run `./apply.sh` and **Dev Containers: Rebuild Container**. Changes to
 | | extra personal `folders` |
 
 The local file overrides the shared one. `folders` are combined, matched on
-`path`. Each folder is mounted at `/workspace/<folder name>`, so folder names
+`path`. `git` (the commit identity) can go in either file; the local file wins,
+so a team default in `meta-repo.yaml` is overridable per person. Each folder is mounted at `/workspace/<folder name>`, so folder names
 must be unique.
 
 ### Hiding files (`ignore`)
@@ -172,6 +175,17 @@ _This started out as 3. but I'm moving it back to 1+2._
 
 Right now, I'm indexing on this _working for me_ and I'm not paying attention to the experience for teams.
 
+
+
+## Credential sharing
+
+Credential sharing is proving to be a bit of a bug bear. 
+
+This thread is informative: 
+
+https://github.com/microsoft/vscode-remote-release/issues/9466
+
+The issue is that I would prefer the container _not_ to share my host git credentials - I don't want the agent going rogue with my full git permissions. 
 
 
 ## Short comings 

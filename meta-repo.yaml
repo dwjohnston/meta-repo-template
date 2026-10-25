@@ -15,6 +15,16 @@ metarepo_id: "meta-repo-template"
 # directory moves. Same character rules as metarepo_id. Put it here to share it with
 # the team, or in meta-repo.local.yaml for one checkout; the local file wins.
 #metarepo_suffix: "1234"
+
+# Optional. Who commits made inside the container are attributed to, as if
+# `git config --global user.name` and `user.email` had been run. This overrides
+# the host .gitconfig that VS Code copies in, which is the point when the
+# container commits as an agent or bot account rather than as you. Set both keys
+# or neither. Put it here to set it for the whole team, or in
+# meta-repo.local.yaml for one person; the local file wins.
+git:
+  name: "blacksheep-bot"
+  email: "bot@blacksheepcode.com"
 # Folders under each person's `root` (set in meta-repo.local.yaml) that make up
 # the meta-repo. Each is mounted at /workspace/<folder name>.
 #
@@ -29,6 +39,7 @@ metarepo_id: "meta-repo-template"
 # creating new files that should be hidden.
 folders:
   - path: "agent-skills"
+  - path: "starting-prompts"
 
 
 
