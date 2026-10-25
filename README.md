@@ -55,7 +55,7 @@ re-run `./apply.sh` and **Dev Containers: Rebuild Container**. Changes to
 
 | `meta-repo.yaml` (committed) | `meta-repo.local.yaml` (gitignored) |
 |---|---|
-| `metarepo_id` | `root` (host path) |
+| `metarepo_id`, `metarepo_suffix` | `root` (host path) |
 | `folders`, `separate_mounts`, `ignore` | `env` values |
 | `persistent_volumes` | `proxy` |
 | `env` keys | `dotfiles` |
@@ -125,18 +125,25 @@ automatically from your host.
 
 ### Volumes
 
-All volumes are named `<metarepo_id>-…`, so different meta-repos don't share
-them:
+Volumes are named `<metarepo_id>-<metarepo_suffix>-…`, so different meta-repos
+and different checkouts of the same one never share them:
 
-- `separate_mounts`: `<id>-folder-<folder>-<mount>`, e.g. `node_modules` kept
-  off the host.
-- `persistent_volumes`: `<id>-persist-<name>`.
-- Agent state: `<id>-claude` (`~/.claude`, including `.claude.json`),
-  `<id>-copilot` (`~/.copilot`), `<id>-vscode-agent-sessions` and
-  `<id>-vscode-global-storage` (under `~/.vscode-server/data`).
+- `separate_mounts`: `<project>-folder-<folder>-<mount>`, e.g. `node_modules`
+  kept off the host.
+- `persistent_volumes`: `<project>-persist-<name>`.
+- Agent state: `<project>-claude` (`~/.claude`, including `.claude.json`),
+  `<project>-copilot` (`~/.copilot`), `<project>-vscode-agent-sessions` and
+  `<project>-vscode-global-storage` (under `~/.vscode-server/data`).
+
+Here `<project>` is the Compose project name, `<metarepo_id>-<suffix>`. The
+suffix is `metarepo_suffix` when you set it, and a hash of the checkout's path
+when you don't — so a second clone or worktree gets its own volumes with no
+configuration. The hash follows the path, so **moving the directory changes the
+name** and leaves the old volumes behind; set `metarepo_suffix` to pin it if you
+move.
 
 To start completely fresh, remove the container and then the volumes:
-`docker volume ls --filter name=<metarepo_id>-`.
+`docker volume ls --filter name=<metarepo_id>-<suffix>-`.
 
 ## Host platforms
 
@@ -148,6 +155,22 @@ To start completely fresh, remove the container and then the volumes:
 
 See [DECISIONS.md](DECISIONS.md) for the reasoning behind the design.
 
+
+## Philosophy
+
+This is a work in progress. 
+
+Consider the ways such a template might want to be used:
+
+
+1. As a general container for a single person for multiple repos, whether related or not
+2. As a single repo container for some work, to be version controlled 
+3. A shared project container for an entire team 
+  - Needs .gitignored individual mappings for things like file paths, environment variables 
+
+_This started out as 3. but I'm moving it back to 1+2._
+
+Right now, I'm indexing on this _working for me_ and I'm not paying attention to the experience for teams.
 
 
 

@@ -4,10 +4,17 @@
 # meta-repo.local.yaml. Copy meta-repo.local.yaml.template to get started.
 # After changing either file, run ./apply.sh and rebuild the container.
 
-# Used as the Compose project name and as a prefix on all volume names, so
-# separate meta-repos never share volumes. Lowercase letters, digits, - and _.
-metarepo_id: "my-meta-repo2"
+# The human part of the Compose project name and the prefix on all volume names.
+# Lowercase letters, digits, - and _.
+metarepo_id: "meta-repo-template"
 
+# Optional. Appended to make the Compose project name `metarepo_id-metarepo_suffix`,
+# so two checkouts of the same meta-repo never share volumes. Unset, a hash of this
+# checkout's path is used: stable while the directory stays put, different for every
+# copy. Set it to pin the name — that's what keeps the existing volumes after the
+# directory moves. Same character rules as metarepo_id. Put it here to share it with
+# the team, or in meta-repo.local.yaml for one checkout; the local file wins.
+#metarepo_suffix: "1234"
 # Folders under each person's `root` (set in meta-repo.local.yaml) that make up
 # the meta-repo. Each is mounted at /workspace/<folder name>.
 #
@@ -21,11 +28,8 @@ metarepo_id: "my-meta-repo2"
 # directories only. Matches are found when apply.sh runs, so re-run it after
 # creating new files that should be hidden.
 folders:
-  - path: "skitchin"
-    ignore:
-      - .env
-    separate_mounts: 
-      - node_modules
+  - path: "agent-skills"
+
 
 
 # Container directories kept across rebuilds, so tools don't need to be

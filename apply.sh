@@ -10,7 +10,7 @@
 # Requires mikefarah/yq v4 on the host. Compatible with macOS's bash 3.2.
 set -euo pipefail
 
-SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 REPO_NAME=$(basename "$SCRIPT_DIR")
 SHARED="$SCRIPT_DIR/meta-repo.yaml"
 LOCAL="$SCRIPT_DIR/meta-repo.local.yaml"
@@ -94,6 +94,19 @@ compose_literal() { printf '%s' "${1//\$/\$\$}"; }
 # Turn an arbitrary string into a Docker volume name fragment.
 volume_slug() { printf '%s' "$1" | sed -e 's#[^A-Za-z0-9_.-]#-#g' -e 's#^[-.]*##'; }
 
+# Short, stable digest of a path: what a checkout gets when no suffix is set.
+path_hash() {
+    local digest
+    if command -v sha256sum >/dev/null 2>&1; then
+        digest=$(printf '%s' "$1" | sha256sum)
+    elif command -v shasum >/dev/null 2>&1; then
+        digest=$(printf '%s' "$1" | shasum -a 256)
+    else
+        die "need sha256sum or shasum to derive a metarepo suffix from the checkout path; set metarepo_suffix instead"
+    fi
+    printf '%s' "${digest%% *}" | cut -c1-6
+}
+
 # Membership test for newline-separated lists (bash 3.2 has no assoc arrays).
 in_list() { case $'\n'"$2"$'\n' in *$'\n'"$1"$'\n'*) return 0 ;; esac; return 1; }
 
@@ -116,6 +129,28 @@ if [[ -z "$METAREPO_ID" ]]; then
 elif ! [[ "$METAREPO_ID" =~ ^[a-z0-9][a-z0-9_-]*$ ]]; then
     err "metarepo_id '$METAREPO_ID' must start with a lowercase letter or digit and contain only lowercase letters, digits, '-' and '_' (it is used as the Compose project name)"
 fi
+
+# ---------------------------------------------------------------------------
+# metarepo_suffix
+#   Appended to metarepo_id to make the Compose project name and the volume
+#   prefix, so two checkouts of the same meta-repo never share volumes.
+#
+#   Optional. Set it (in either yaml) to pin a checkout to a fixed name, which
+#   is what you want after moving the directory. When unset, a hash of this
+#   checkout's path is used: stable for a checkout that stays put, different
+#   for every copy.
+# ---------------------------------------------------------------------------
+METAREPO_SUFFIX=$(q '.metarepo_suffix // ""')
+if [[ -n "$METAREPO_SUFFIX" ]]; then
+    if ! [[ "$METAREPO_SUFFIX" =~ ^[a-z0-9][a-z0-9_-]*$ ]]; then
+        err "metarepo_suffix '$METAREPO_SUFFIX' must start with a lowercase letter or digit and contain only lowercase letters, digits, '-' and '_' (it is part of the Compose project name)"
+    fi
+    SUFFIX_SOURCE="metarepo_suffix"
+else
+    METAREPO_SUFFIX=$(path_hash "$SCRIPT_DIR")
+    SUFFIX_SOURCE="path hash"
+fi
+PROJECT_NAME="$METAREPO_ID-$METAREPO_SUFFIX"
 
 # ---------------------------------------------------------------------------
 # root
@@ -317,11 +352,11 @@ fi
 echo "{}" > "$GEN"
 gen() { yq -i "$1" "$GEN"; }
 
-ID="$METAREPO_ID" gen '.name = strenv(ID)'
+PROJECT="$PROJECT_NAME" gen '.name = strenv(PROJECT)'
 
 # Names for the volumes declared in compose.yaml (agent state).
 for key in $(yq '.volumes // {} | keys | .[]' "$STATIC_COMPOSE"); do
-    K="$key" N="$METAREPO_ID-$key" gen '.volumes[strenv(K)] = {"name": strenv(N)}'
+    K="$key" N="$PROJECT_NAME-$key" gen '.volumes[strenv(K)] = {"name": strenv(N)}'
 done
 
 # Build-time proxy -> build args
@@ -361,7 +396,7 @@ VOLUME_PATHS=""
 add_volume() {
     local key=$1 target=$2
     K="$key" T="$target" gen '.services.dev.volumes += [{"type": "volume", "source": strenv(K), "target": strenv(T)}]'
-    K="$key" N="$METAREPO_ID-$key" gen '.volumes[strenv(K)] = {"name": strenv(N)}'
+    K="$key" N="$PROJECT_NAME-$key" gen '.volumes[strenv(K)] = {"name": strenv(N)}'
     VOLUME_PATHS="${VOLUME_PATHS:+$VOLUME_PATHS:}$target"
 }
 
@@ -438,7 +473,10 @@ fi
 
 echo
 echo "Wrote .devcontainer/compose.local.yaml ($( $ADMIN && echo 'admin mode' || echo 'standard mode' ))"
-echo "  project:  $METAREPO_ID"
+echo "  project:  $PROJECT_NAME"
+if [[ "$SUFFIX_SOURCE" != metarepo_suffix ]]; then
+    echo "  suffix:   $METAREPO_SUFFIX (hash of this checkout's path; set metarepo_suffix to pin it)"
+fi
 printf '%s' "$FOLDER_NAMES" | while IFS= read -r name; do
     [[ -n "$name" ]] && echo "  /workspace/$name"
 done
