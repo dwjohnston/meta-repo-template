@@ -50,7 +50,8 @@
       "extensions": [
         "anthropic.claude-code",
         "GitHub.copilot",
-        "GitHub.copilot-chat"
+        "GitHub.copilot-chat",
+        "openai.chatgpt"
       ]
     }
   }

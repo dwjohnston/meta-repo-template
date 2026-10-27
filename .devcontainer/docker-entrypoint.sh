@@ -79,6 +79,18 @@ ln -sfn "$claude_json_persisted" "$claude_json"
 chown -h "$USER_UID:$USER_GID" "$claude_json"
 [[ -e "$claude_json_persisted" ]] && chown "$USER_UID:$USER_GID" "$claude_json_persisted"
 
+# Trust the repositories mounted under /workspace. They are bind-mounted from
+# the host and owned by the host UID, which differs from vscode (especially on
+# macOS, where updateRemoteUserUID is a no-op). Git would otherwise refuse to
+# touch them with "detected dubious ownership in repository". The `*` wildcard
+# would trust everything; scoping to /workspace keeps the relaxation minimal.
+# Idempotent across restarts.
+if ! runuser -u "$USER_NAME" -- env HOME="$USER_HOME" \
+        git config --global --get-all safe.directory 2>/dev/null | grep -qx /workspace; then
+    runuser -u "$USER_NAME" -- env HOME="$USER_HOME" \
+        git config --global --add safe.directory /workspace
+fi
+
 # Configure Git for the container user without contacting GitHub or storing a
 # token. gh reads GITHUB_TOKEN (or GH_TOKEN) when Git requests credentials.
 # This is also safe when no token is set: only authenticated Git operations fail.
