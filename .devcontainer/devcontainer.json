@@ -49,6 +49,7 @@
       },
       "extensions": [
         "anthropic.claude-code",
+        "eamodio.gitlens",
         "GitHub.copilot",
         "GitHub.copilot-chat",
         "openai.chatgpt"
