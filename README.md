@@ -59,8 +59,8 @@ Skills come from [dwjohnston/agent-skills](https://github.com/dwjohnston/agent-s
 and are tracked in `skills-lock.json`:
 
 ```bash
-make skills-add      # npx skills add dwjohnston/agent-skills
-make skills-update   # npx skills update
+make skills-add      # bunx skills add dwjohnston/agent-skills
+make skills-update   # bunx skills update
 ```
 
 ## Configuration
