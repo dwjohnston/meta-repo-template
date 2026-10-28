@@ -198,6 +198,13 @@ https://github.com/microsoft/vscode-remote-release/issues/9466
 
 The issue is that I would prefer the container _not_ to share my host git credentials - I don't want the agent going rogue with my full git permissions. 
 
+I've got it working:
+
+- provide GITHUB_TOKEN as an env var
+- It is expected to work for _all_ repos. 
+
+
+
 
 ## Short comings 
 

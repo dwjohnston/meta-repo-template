@@ -9,6 +9,19 @@
 #    persisted ~/.claude volume.
 set -euo pipefail
 
+# token_length() {
+#     local token="${1-}"
+#     printf '%s' "${#token}"
+# }
+
+# printf '[meta-repo] token lengths: GITHUB_TOKEN=%s X_GITHUB_TOKEN=%s\n' \
+#     "$(token_length "${GITHUB_TOKEN-}")" \
+#     "$(token_length "${X_GITHUB_TOKEN-}")"
+
+# if [[ -n "${X_GITHUB_TOKEN:-}" ]]; then
+#     export GITHUB_TOKEN="$X_GITHUB_TOKEN"
+# fi
+
 USER_NAME=vscode
 USER_HOME=/home/${USER_NAME}
 USER_UID=$(id -u "$USER_NAME")
@@ -95,7 +108,18 @@ fi
 # Configure Git for the container user without contacting GitHub or storing a
 # token. gh reads GITHUB_TOKEN (or GH_TOKEN) when Git requests credentials.
 # This is also safe when no token is set: only authenticated Git operations fail.
-if ! runuser -u "$USER_NAME" -- env HOME="$USER_HOME" bash -c '
+if [ -z "${GITHUB_TOKEN:-}" ]; then
+    echo "[meta-repo] GITHUB_TOKEN not set; skipping GitHub auth setup" >&2
+elif ! runuser -u "$USER_NAME" -- env HOME="$USER_HOME" bash -c '
+    # 1. Store the token as a persistent gh login. Clear the env vars for this
+    #    one call, because gh refuses to store credentials while they are set.
+    #    A failure here is non-fatal.
+    printf %s "$GITHUB_TOKEN" \
+        | env -u GITHUB_TOKEN -u GH_TOKEN \
+            gh auth login --hostname github.com --with-token --insecure-storage \
+        || echo "[meta-repo] warning: gh auth login failed" >&2
+
+    # 2. Git config: HTTPS via gh credential helper, rewrite SSH URLs
     set -e
     git config --global --replace-all credential.https://github.com.helper ""
     git config --global --add credential.https://github.com.helper "!gh auth git-credential"
