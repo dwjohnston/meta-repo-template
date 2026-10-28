@@ -40,6 +40,8 @@ git:
 folders:
   - path: "agent-skills"
   - path: "starting-prompts"
+  - path: "pa"
+
 
 
 
