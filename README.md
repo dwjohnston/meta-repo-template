@@ -53,6 +53,16 @@ After changing `meta-repo.yaml`, `meta-repo.local.yaml` or the Dockerfile,
 re-run `./apply.sh` and **Dev Containers: Rebuild Container**. Changes to
 `.agents/` and `.root/` files show up live.
 
+## Agent skills
+
+Skills come from [dwjohnston/agent-skills](https://github.com/dwjohnston/agent-skills)
+and are tracked in `skills-lock.json`:
+
+```bash
+make skills-add      # npx skills add dwjohnston/agent-skills
+make skills-update   # npx skills update
+```
+
 ## Configuration
 
 | `meta-repo.yaml` (committed) | `meta-repo.local.yaml` (gitignored) |
