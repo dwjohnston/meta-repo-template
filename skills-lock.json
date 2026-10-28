@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "skills": {
+    "git-always-commit": {
+      "source": "dwjohnston/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/git-always-commit/SKILL.md",
+      "computedHash": "7e6f80ac1e336ef4e05011f48ce2c91125d7612cd95a49a3411fa5bb772cbf26"
+    },
+    "markdown-general": {
+      "source": "dwjohnston/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/markdown-general/SKILL.md",
+      "computedHash": "ea3667dd47f057d4cce05908339be404e58887f6f5002d51d4ca126d17b3a841"
+    },
+    "markdown-writing-markdown-blocks": {
+      "source": "dwjohnston/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/markdown-writing-markdown-blocks/SKILL.md",
+      "computedHash": "4cf6bd3beb108cb7a34ea6357b980742c28f9510228c38da1f8546afbeaa1b86"
+    },
+    "markdown-writing-prompts": {
+      "source": "dwjohnston/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/markdown-writing-prompts/SKILL.md",
+      "computedHash": "1061a85467be303d902e4de25680d3642abd531e9a1f5baa91b8eef4ea63e2dc"
+    },
+    "pa": {
+      "source": "dwjohnston/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/pa/SKILL.md",
+      "computedHash": "a733a5c5ab780a1e53c12c0372e4fe417e4ae333af59481ceaabb653adc8f4d2"
+    },
+    "user-get-attention": {
+      "source": "dwjohnston/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/user-get-attention/SKILL.md",
+      "computedHash": "204f79c3501a736c5a7942cfbf7be20fa31d2a6107b9234105ee922fd4bde1ae"
+    },
+    "write-for-the-human": {
+      "source": "dwjohnston/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/write-for-the-human/SKILL.md",
+      "computedHash": "319058eba84c3fa632e16f9a6ad250789dd9b59ea68a1f42a8555e72cc2ad798"
+    }
+  }
+}
