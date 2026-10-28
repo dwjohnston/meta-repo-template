@@ -145,6 +145,7 @@ and different checkouts of the same one never share them:
   kept off the host.
 - `persistent_volumes`: `<project>-persist-<name>`.
 - Agent state: `<project>-claude` (`~/.claude`, including `.claude.json`),
+  `<project>-dsh` (`~/.dsh`, including session and diagnostic logs),
   `<project>-copilot` (`~/.copilot`), `<project>-vscode-agent-sessions` and
   `<project>-vscode-global-storage` (under `~/.vscode-server/data`).
 

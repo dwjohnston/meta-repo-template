@@ -20,6 +20,7 @@ AGENT_STATE_PATHS=(
     "$USER_HOME/.vscode-server/data/agentSessionData"
     "$USER_HOME/.vscode-server/data/User/globalStorage"
     "$USER_HOME/.claude"
+    "$USER_HOME/.dsh"
 )
 
 # Extra volume paths (separate_mounts, persistent_volumes) come from

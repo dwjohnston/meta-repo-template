@@ -78,6 +78,7 @@ WORKDIR /home/vscode
 RUN mkdir -p \
         /home/vscode/.copilot \
         /home/vscode/.claude \
+        /home/vscode/.dsh \
         /home/vscode/.vscode-server/data/agentSessionData \
         /home/vscode/.vscode-server/data/User/globalStorage
 
@@ -107,6 +108,12 @@ RUN curl -fsSL https://claude.ai/install.sh | bash
 
 # OpenAI Codex CLI (latest at build time), installed globally into the default Node
 RUN . "$NVM_DIR/nvm.sh" && npm install -g @openai/codex
+
+# DeepSeek Harness CLI and its plugin package manager (latest at build time)
+RUN . "$NVM_DIR/nvm.sh" \
+    && npm install -g \
+        --allow-scripts=pnpm,@deepseek-ai/dsh-subprocess-local,koffi,node-pty,@google/genai,protobufjs \
+        @deepseek-ai/dsh pnpm
 
 ENV PATH=/home/vscode/.local/bin:/home/vscode/.bun/bin:/home/vscode/.nvm/default-node/bin:${PATH}
 

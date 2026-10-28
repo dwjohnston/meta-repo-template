@@ -51,6 +51,10 @@ services:
         source: claude
         # Also holds .claude.json; the entrypoint symlinks ~/.claude.json here.
         target: /home/vscode/.claude
+      - type: volume
+        source: dsh
+        # Includes session transcripts under sessions/ and diagnostics under logs/.
+        target: /home/vscode/.dsh
 
 # compose.local.yaml gives each of these an explicit name prefixed with
 # metarepo_id, so separate meta-repos never share volumes.
@@ -59,3 +63,4 @@ volumes:
   vscode-agent-sessions:
   vscode-global-storage:
   claude:
+  dsh:
