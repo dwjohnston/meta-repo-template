@@ -40,3 +40,15 @@ Check `/tmp/skill-observer-<uid>/<session-id>.log`. If the first prompt appears 
 - Always create the chat after the target folder is open.
 - Drop `|| true`, or log failures to the observer log, so errors are visible.
 - Widen the `preToolUse` matcher if `bash` writes should be observed.
+
+## Related GitHub issues
+
+Searched `github/copilot-cli` and `microsoft/vscode`. No issue covers hooks not reloading after a mid-chat workspace change (`set_workspace`). If it should be reported, `microsoft/vscode` is the likelier home.
+
+Closest matches in `github/copilot-cli`:
+
+- [#4520](https://github.com/github/copilot-cli/issues/4520), open: a standalone `.github/hooks/*.json` `postToolUse` hook (not from a plugin) never fires.
+- [#1730](https://github.com/github/copilot-cli/issues/1730), open: a `sessionStart` hook in `.github/hooks/` does not fire in v0.0.420.
+- [#3167](https://github.com/github/copilot-cli/issues/3167), closed: `preToolUse` silently dropped after a mid-loop `extensions_reload`, from a stale snapshot. The nearest to "hooks go stale mid-session".
+- [#2540](https://github.com/github/copilot-cli/issues/2540), open: plugin-defined `preToolUse` hooks do not fire in the main session or in subagents.
+- [#2893](https://github.com/github/copilot-cli/issues/2893), open: `preToolUse` hooks silently bypassed under parallel tool calls, through a timeout-to-allow fallback. Relevant because the denied `create` in session `401559ce` ran in a parallel batch with `bash`.
