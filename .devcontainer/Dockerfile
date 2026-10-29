@@ -51,7 +51,7 @@ ARG no_proxy=${BUILDTIME_NO_PROXY}
 # System packages + GitHub CLI
 # ---------------------------------------------------------------------------
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates curl git gnupg python3 unzip \
+    && apt-get install -y --no-install-recommends ca-certificates curl git gnupg nano python3 unzip \
     && mkdir -p -m 755 /etc/apt/keyrings \
     && curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
         -o /etc/apt/keyrings/githubcli-archive-keyring.gpg \
@@ -130,6 +130,9 @@ ENV PATH=/home/vscode/.local/bin:/home/vscode/.bun/bin:/home/vscode/.nvm/default
 # variables the whole team needs here, e.g.:
 # ENV SOME_TOOL_HOME=/opt/some-tool
 # ---------------------------------------------------------------------------
+
+# Default editor for git, crontab, etc.
+ENV EDITOR=nano VISUAL=nano
 
 # The container starts as root so the entrypoint can fix volume ownership.
 # Dev Containers connects as `vscode` (remoteUser in devcontainer.json).
