@@ -62,6 +62,9 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends gh \
     && rm -rf /var/lib/apt/lists/*
 
+# System-wide git defaults (user/global config can still override these).
+RUN git config --system push.autoSetupRemote true
+
 # /workspace is the container's workspace root. Create it owned by vscode so
 # Docker doesn't create it as root when mounting folders into it.
 RUN mkdir -p /workspace && chown vscode:vscode /workspace
