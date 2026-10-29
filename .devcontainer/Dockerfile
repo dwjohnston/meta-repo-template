@@ -109,6 +109,10 @@ RUN curl -fsSL https://claude.ai/install.sh | bash
 # OpenAI Codex CLI (latest at build time), installed globally into the default Node
 RUN . "$NVM_DIR/nvm.sh" && npm install -g @openai/codex
 
+# Bun type definitions and the TypeSafe SDK (latest at build time), installed
+# globally into the default Node
+RUN . "$NVM_DIR/nvm.sh" && npm install -g @types/bun @typesafe-ai/sdk
+
 # DeepSeek Harness CLI and its plugin package manager (latest at build time)
 RUN . "$NVM_DIR/nvm.sh" \
     && npm install -g \
