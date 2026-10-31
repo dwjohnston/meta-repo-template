@@ -117,7 +117,7 @@ elif ! runuser -u "$USER_NAME" -- env HOME="$USER_HOME" bash -c '
     printf %s "$GITHUB_TOKEN" \
         | env -u GITHUB_TOKEN -u GH_TOKEN \
             gh auth login --hostname github.com --with-token --insecure-storage \
-        || echo "[meta-repo] warning: gh auth login failed" >&2
+        || echo "[meta-repo] ⚠️  warning: gh auth login failed" >&2
 
     # 2. Git config: HTTPS via gh credential helper, rewrite SSH URLs
     set -e
@@ -126,7 +126,7 @@ elif ! runuser -u "$USER_NAME" -- env HOME="$USER_HOME" bash -c '
     git config --global --replace-all url.https://github.com/.insteadOf "git@github.com:"
     git config --global --add url.https://github.com/.insteadOf "ssh://git@github.com/"
 '; then
-    echo "[meta-repo] warning: GitHub Git setup failed; continuing startup" >&2
+    echo "[meta-repo] ⚠️  warning: GitHub Git setup failed; continuing startup" >&2
 fi
 
 exec "$@"

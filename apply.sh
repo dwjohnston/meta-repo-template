@@ -35,7 +35,7 @@ done
 die() { echo "apply.sh: error: $*" >&2; exit 1; }
 ERRORS=0
 err() { echo "  ✗ $*" >&2; ERRORS=$((ERRORS + 1)); }
-warn() { echo "  ! $*" >&2; }
+warn() { echo "  ⚠️  $*" >&2; }
 
 # ---------------------------------------------------------------------------
 # Prerequisites
