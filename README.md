@@ -116,18 +116,21 @@ bring your aliases and shell setup into the container:
 
 ```yaml
 dotfiles:
-  - ~/.aliases
+  - ~/git-workspace/dotfiles/aliases
+  - ~/.my-functions
 ```
 
 Each is bind-mounted **read-only** at the same path under `/home/vscode`.
 Missing entries are skipped with a warning. Edits on the host show up live.
 
-The image's `~/.bashrc` and `~/.zshrc` source `~/.aliases` if it exists, so put
-your portable aliases and functions there and `source` it from your host
-`.zshrc`. Don't mount a whole `.zshrc`/`.bashrc`: it would replace the image's
-own (which sets up nvm) and usually contains macOS paths and secrets. VS Code
-already copies your host `.gitconfig` into the container. Don't list files
-containing secrets: everything mounted is readable in the container.
+Every listed **file** is also sourced, in order, by the image's `~/.bashrc` and
+`~/.zshrc` (via `META_REPO_DOTFILES`, set by `apply.sh`). Directories are
+mounted but not sourced. Source the same files from your host `.zshrc` too.
+Paths must not contain `:`. Don't mount a whole `.zshrc`/`.bashrc`: it would
+replace the image's own (which sets up nvm) and usually contains macOS paths
+and secrets. VS Code already copies your host `.gitconfig` into the container.
+Don't list files containing secrets: everything mounted is readable in the
+container. Changing the list needs `./apply.sh` and a container rebuild.
 
 ### Proxies
 

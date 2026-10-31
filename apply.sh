@@ -436,6 +436,15 @@ printf '%s' "$DOTFILES_REL" | while IFS= read -r rel; do
     [[ -n "$rel" ]] && add_bind "$HOME/$rel" "$CONTAINER_HOME/$rel" ro
 done
 
+# The image sources each of these (files only) from its bash/zsh rc files.
+DOTFILES_SOURCED=""
+while IFS= read -r rel; do
+    [[ -n "$rel" ]] && DOTFILES_SOURCED="${DOTFILES_SOURCED:+$DOTFILES_SOURCED:}$CONTAINER_HOME/$rel"
+done <<< "$DOTFILES_REL"
+if [[ -n "$DOTFILES_SOURCED" ]]; then
+    D="$DOTFILES_SOURCED" gen '.services.dev.environment.META_REPO_DOTFILES = strenv(D)'
+fi
+
 # The repos, and their separate_mounts
 i=0
 while [[ $i -lt $FOLDER_COUNT ]]; do

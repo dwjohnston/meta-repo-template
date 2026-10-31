@@ -5,3 +5,4 @@
 !docker-entrypoint.sh
 !certs
 !certs/**
+!meta-repo-dotfiles.sh

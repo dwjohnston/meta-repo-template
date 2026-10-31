@@ -97,10 +97,12 @@ RUN curl -fsSL "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/inst
         printf '\nexport NVM_DIR="%s"\n[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"\n[ -s "$NVM_DIR/bash_completion" ] && [ -n "$BASH_VERSION" ] && . "$NVM_DIR/bash_completion"\n' "$NVM_DIR" >> "$rc"; \
     done
 
-# Personal aliases: if the `dotfiles` setting in meta-repo.local.yaml mounts a
-# ~/.aliases file, load it in interactive bash and zsh. Does nothing otherwise.
+# Personal dotfiles: every file listed under `dotfiles` in meta-repo.local.yaml
+# is sourced in interactive bash and zsh (apply.sh passes them in
+# META_REPO_DOTFILES). Does nothing if none are listed.
+COPY meta-repo-dotfiles.sh /home/vscode/.meta-repo-dotfiles.sh
 RUN for rc in ~/.bashrc ~/.zshrc; do \
-        printf '\n[ -f ~/.aliases ] && . ~/.aliases\n' >> "$rc"; \
+        printf '\n[ -f ~/.meta-repo-dotfiles.sh ] && . ~/.meta-repo-dotfiles.sh\n' >> "$rc"; \
     done
 
 # bun (latest at build time)
