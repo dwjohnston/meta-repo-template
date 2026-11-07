@@ -18,6 +18,7 @@ Once per repository you are working on, add an empty commit
 <harness>/<model>
 ```
 
+
 ## Subequent changes
 
 Before you end the turn, be sure to commit

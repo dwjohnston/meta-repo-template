@@ -39,8 +39,13 @@ git:
 # creating new files that should be hidden.
 folders:
   - path: "agent-skills"
-  - path: "starting-prompts"
   - path: "pa"
+  - path: "thunderjar"
+    separate_mounts:
+      - node_modules
+  - path: "dotfiles"
+  - path: "ai-experiments"
+  - path: "thunderjar-evaluation-sandbox"
 
 
 
@@ -49,6 +54,7 @@ folders:
 # reinstalled each time. <volume name>: <container path>
 persistent_volumes:
   tool-cache: /home/vscode/.cache
+  persist: /workspace/persistence
 
 # Environment variables the container expects. Declare the keys here and leave
 # the values empty; each person sets the values in meta-repo.local.yaml.
