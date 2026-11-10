@@ -13,20 +13,7 @@ one workspace (a "meta-repo"). This file is at `/workspace/AGENTS.md`.
         Dockerfile
         devcontainer.json
         compose.yaml
-    <repo>/            # one directory per repository
+    <!-- meta-repo:folders -->
 ```
 
-`workspace/` itself is not version controlled. 
-
-The individual folders underneath are.
-
-## ThunderJar
-
-```
-thunderjar/           # the thunderjar implementation
-thunderjar2/          # Just the spec 
-```
-
-
-
-
+`/workspace/` itself is not version controlled. Each folder listed above is its own repository.

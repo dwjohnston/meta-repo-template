@@ -37,15 +37,25 @@ git:
 # the path from the folder root (`config/**/*.pem`), and a trailing `/` matches
 # directories only. Matches are found when apply.sh runs, so re-run it after
 # creating new files that should be hidden.
+#
+# description is optional. It is written next to the folder in the container's
+# /workspace/AGENTS.md, so agents know what each folder is for.
 folders:
   - path: "agent-skills"
+  - path: "blacksheepcode"
+    description: Description here 
+    separate_mounts:
+      - node_modules
   - path: "pa"
+    description: Personal assistant notes and project tracking
+  - path: "claude-workspace"
   - path: "thunderjar"
+    description: The thunderjar implementation
     separate_mounts:
       - node_modules
   - path: "dotfiles"
   - path: "ai-experiments"
-  - path: "thunderjar-evaluation-sandbox"
+  # - path: "thunderjar-evaluation-sandbox"
 
 
 

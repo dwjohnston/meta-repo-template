@@ -426,9 +426,41 @@ add_volume() {
     VOLUME_PATHS="${VOLUME_PATHS:+$VOLUME_PATHS:}$target"
 }
 
+# .root/AGENTS.md may hold a marker line where the folder listing goes. Render
+# it from the merged config into a generated file, and mount that instead.
+LAYOUT_MARKER="<!-- meta-repo:folders -->"
+AGENTS_TEMPLATE="$ROOT_FILES_DIR/AGENTS.md"
+AGENTS_GENERATED="$SCRIPT_DIR/.devcontainer/AGENTS.generated.md"
+USE_GENERATED_AGENTS=false
+if [[ -f "$AGENTS_TEMPLATE" ]] && grep -qF "$LAYOUT_MARKER" "$AGENTS_TEMPLATE"; then
+    # One `<path>/  # <description>` line per folder, comments aligned.
+    q -r '.folders[] | .path + "/\t" + (.description // "")' \
+        | awk -F'\t' '
+            { p[NR] = $1; d[NR] = $2; if (length($1) > w) w = length($1) }
+            END {
+                for (i = 1; i <= NR; i++) {
+                    if (d[i] == "") printf "    %s\n", p[i]
+                    else printf "    %-" w "s  # %s\n", p[i], d[i]
+                }
+            }' > "$TMP_DIR/folder-listing.txt" \
+        || die "could not render the folder listing"
+    awk -v marker="$LAYOUT_MARKER" '
+        FNR == NR { listing = listing $0 "\n"; next }
+        index($0, marker) { printf "%s", listing; next }
+        { print }
+    ' "$TMP_DIR/folder-listing.txt" "$AGENTS_TEMPLATE" > "$AGENTS_GENERATED" \
+        || die "could not render AGENTS.md"
+    USE_GENERATED_AGENTS=true
+fi
+
 # Files from .root/ live in /workspace/
 printf '%s' "$ROOT_ENTRIES" | while IFS= read -r name; do
-    [[ -n "$name" ]] && add_bind "../.root/$name" "/workspace/$name"
+    [[ -n "$name" ]] || continue
+    if [[ "$name" == AGENTS.md ]] && $USE_GENERATED_AGENTS; then
+        add_bind "./AGENTS.generated.md" "/workspace/AGENTS.md"
+    else
+        add_bind "../.root/$name" "/workspace/$name"
+    fi
 done
 
 # Personal dotfiles (aliases etc.), read-only, in the container user's home
