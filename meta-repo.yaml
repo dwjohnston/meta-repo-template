@@ -55,7 +55,7 @@ folders:
       - node_modules
   - path: "dotfiles"
   - path: "ai-experiments"
-  # - path: "thunderjar-evaluation-sandbox"
+  - path: "thunderjar-evaluation-sandbox"
 
 
 
