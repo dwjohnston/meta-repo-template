@@ -124,7 +124,10 @@ RUN . "$NVM_DIR/nvm.sh" \
         --allow-scripts=pnpm,@deepseek-ai/dsh-subprocess-local,koffi,node-pty,@google/genai,protobufjs \
         @deepseek-ai/dsh pnpm
 
-ENV PATH=/home/vscode/.local/bin:/home/vscode/.bun/bin:/home/vscode/.nvm/default-node/bin:${PATH}
+# Fly.io CLI (latest at build time), installed to ~/.fly/bin
+RUN curl -fsSL https://fly.io/install.sh | sh
+
+ENV PATH=/home/vscode/.fly/bin:/home/vscode/.local/bin:/home/vscode/.bun/bin:/home/vscode/.nvm/default-node/bin:${PATH}
 
 # ---------------------------------------------------------------------------
 # Runtime environment
