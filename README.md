@@ -21,7 +21,8 @@ Inside the container:
 Fork this template, then edit and commit:
 
 - `meta-repo.yaml`: `metarepo_id`, the `folders` (repos) everyone works on,
-  `separate_mounts`, `persistent_volumes` and the `env` keys the container needs.
+  `separate_mounts`, `persistent_volumes`, `ports` and the `env` keys the
+  container needs.
 - `.devcontainer/Dockerfile`: extra tools. Uncomment the certs block if you
   need corporate CA certificates (put `.crt` files in `.devcontainer/certs/`).
 - `.root/AGENTS.md` and `.agents/skills/`: instructions and skills for agents.
@@ -69,7 +70,7 @@ make skills-update   # bunx skills update
 |---|---|
 | `metarepo_id`, `metarepo_suffix` | `root` (host path) |
 | `folders`, `separate_mounts`, `ignore` | `env` values |
-| `persistent_volumes` | `proxy` |
+| `persistent_volumes`, `ports` | `proxy` |
 | `env` keys | `dotfiles` |
 | | extra personal `folders` |
 
@@ -131,6 +132,21 @@ replace the image's own (which sets up nvm) and usually contains macOS paths
 and secrets. VS Code already copies your host `.gitconfig` into the container.
 Don't list files containing secrets: everything mounted is readable in the
 container. Changing the list needs `./apply.sh` and a container rebuild.
+
+### Ports
+
+`ports` lists container ports, or `start-end` ranges, to reach from the host.
+Each is published on `127.0.0.1` at the same port + 10000:
+
+```yaml
+ports:
+  - 3000-3003   # http://localhost:13000-13003
+  - 5173        # http://localhost:15173
+```
+
+Servers must listen on `0.0.0.0` inside the container. Keep the list short:
+publishing a large range makes the container very slow to start. Setting
+`ports` in `meta-repo.local.yaml` replaces the shared list.
 
 ### Proxies
 

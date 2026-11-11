@@ -10,16 +10,7 @@ services:
       context: .
       dockerfile: Dockerfile
     init: true
-    # A few common dev-server ports, published on host port + 10000,
-    # e.g. container 5173 -> host 15173. Kept to a short list because publishing
-    # a large range makes container startup very slow.
-    # Servers must listen on 0.0.0.0 inside the container; a process bound to
-    # 127.0.0.1 won't receive this.
-    ports:
-      - "127.0.0.1:13000-13003:3000-3003"
-      - "127.0.0.1:18000-18003:8000-8003"
-      - "127.0.0.1:14173:4173"
-      - "127.0.0.1:15173:5173"
+    # Published ports come from `ports` in meta-repo.yaml (see compose.local.yaml).
     volumes:
       # Read-only copies of the environment definition, so agents can see how
       # their environment is built. compose.local.yaml is deliberately excluded

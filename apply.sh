@@ -326,6 +326,48 @@ while IFS= read -r key; do
 done <<< "$ENV_KEYS"
 
 # ---------------------------------------------------------------------------
+# ports
+#   Container ports (or `start-end` ranges) to publish on the host, at the
+#   same port + 10000 and bound to 127.0.0.1. Keep the list short: publishing
+#   a large range makes the container very slow to start.
+# ---------------------------------------------------------------------------
+PORT_OFFSET=10000
+PORT_SPECS=""
+PORT_RANGES=""
+if [[ "$(q '.ports // [] | tag')" != "!!seq" ]]; then
+    err "ports must be a list (each entry starts with \"- \")"
+else
+    while IFS= read -r spec; do
+        [[ -n "$spec" ]] || continue
+        if [[ "$spec" =~ ^([0-9]+)$ ]]; then
+            lo=${BASH_REMATCH[1]}; hi=$lo
+        elif [[ "$spec" =~ ^([0-9]+)-([0-9]+)$ ]]; then
+            lo=${BASH_REMATCH[1]}; hi=${BASH_REMATCH[2]}
+        else
+            err "port '$spec' must be a port number or a range like 3000-3003"
+            continue
+        fi
+        lo=$((10#$lo)); hi=$((10#$hi))
+        if [[ $lo -lt 1 || $hi -gt $((65535 - PORT_OFFSET)) || $lo -gt $hi ]]; then
+            err "port '$spec' must be within 1-$((65535 - PORT_OFFSET)) (the host port is +$PORT_OFFSET), with the start of a range not after its end"
+            continue
+        fi
+        while IFS=' ' read -r olo ohi; do
+            [[ -n "$olo" ]] || continue
+            if [[ $lo -le $ohi && $hi -ge $olo ]]; then
+                err "port '$spec' overlaps another entry in ports"
+            fi
+        done <<< "$PORT_RANGES"
+        PORT_RANGES="$PORT_RANGES$lo $hi"$'\n'
+        if [[ $lo -eq $hi ]]; then
+            PORT_SPECS="${PORT_SPECS}127.0.0.1:$((lo + PORT_OFFSET)):$lo"$'\n'
+        else
+            PORT_SPECS="${PORT_SPECS}127.0.0.1:$((lo + PORT_OFFSET))-$((hi + PORT_OFFSET)):$lo-$hi"$'\n'
+        fi
+    done <<< "$(q '.ports // [] | .[]')"
+fi
+
+# ---------------------------------------------------------------------------
 # dotfiles (personal, from meta-repo.local.yaml)
 # Each entry is a file or directory under your host home directory. It is
 # mounted read-only at the same path under the container user's home.
@@ -383,6 +425,11 @@ for var in http_proxy https_proxy no_proxy; do
         K="BUILDTIME_$upper" V="$value" gen '.services.dev.build.args[strenv(K)] = strenv(V)'
     fi
 done
+
+# Published ports
+while IFS= read -r spec; do
+    [[ -n "$spec" ]] && P="$spec" gen '.services.dev.ports += [strenv(P)]'
+done <<< "$PORT_SPECS"
 
 # Environment
 ID="$METAREPO_ID" gen '.services.dev.environment.META_REPO_ID = strenv(ID)'
@@ -546,6 +593,10 @@ if [[ "$SUFFIX_SOURCE" != metarepo_suffix ]]; then
 fi
 if [[ -n "$GIT_NAME" ]]; then
     echo "  git:      $GIT_NAME <$GIT_EMAIL>"
+fi
+if [[ -n "$PORT_SPECS" ]]; then
+    echo "  ports (host:container):"
+    printf '%s' "$PORT_SPECS" | sed -e 's/^127\.0\.0\.1:/    /' -e 's/:/ -> /'
 fi
 printf '%s' "$FOLDER_NAMES" | while IFS= read -r name; do
     [[ -n "$name" ]] && echo "  /workspace/$name"

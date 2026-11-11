@@ -60,6 +60,18 @@ folders:
 
 
 
+# Container ports to reach from the host. Each entry is a port or a
+# `start-end` range, published on 127.0.0.1 at the same port + 10000,
+# e.g. 5173 -> http://localhost:15173. Servers must listen on 0.0.0.0 inside
+# the container. Keep the list short: publishing a large range makes the
+# container very slow to start. Set `ports` in meta-repo.local.yaml to replace
+# this list for one person.
+ports:
+  - 3000-3003
+  - 8000-8003
+  - 4173
+  - 5173
+
 # Container directories kept across rebuilds, so tools don't need to be
 # reinstalled each time. <volume name>: <container path>
 persistent_volumes:
