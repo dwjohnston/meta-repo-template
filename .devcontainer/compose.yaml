@@ -10,6 +10,10 @@ services:
       context: .
       dockerfile: Dockerfile
     init: true
+    # Host port 15000 -> container port 5000. The app must listen on 0.0.0.0
+    # inside the container; a process bound to 127.0.0.1 won't receive this.
+    ports:
+      - "127.0.0.1:15000:5000"
     volumes:
       # Read-only copies of the environment definition, so agents can see how
       # their environment is built. compose.local.yaml is deliberately excluded

@@ -46,6 +46,9 @@
         // Prevent VS Code from injecting Git authentication into terminals.
         // https://github.com/microsoft/vscode/blob/main/extensions/git/package.json#L3941
         "git.terminalAuthentication": false,
+        // Don't auto-forward ports; compose.yaml publishes the ones we want.
+        "remote.autoForwardPorts": false,
+        "remote.restoreForwardedPorts": false,
         // Default chat model, and start new sessions with all tool calls allowed.
         "chat.defaultModel": "Claude Sonnet 5.5 (copilot)",
         "chat.defaultConfiguration": {
